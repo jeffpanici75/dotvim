@@ -61,6 +61,12 @@ Plugin 'godlygeek/tabular'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'wincent/command-t'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'marijnh/tern_for_vim'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'groenewege/vim-less'
+Plugin 'othree/html5.vim'
+Plugin 'mattn/webapi-vim'
+Plugin 'jistr/vim-nerdtree-tabs'
 
 call vundle#end()
 " 
@@ -110,19 +116,24 @@ set ruler
 
 " ctrlp setup
 nnoremap <C-r> :CtrlPMRU<cr>
+nnoremap <leader>. :CtrlPTag<cr>
 set wildignore +=*/tmp/*,*.so,*.swp,*.zip,*.tar.gz
 
 " ctags
 set tags=./tags;~/Projects
+nnoremap <leader>c :UpdateCtags()<cr>
 
-nnoremap <leader>. :CtrlPTag<cr>
-nnoremap <leader>c :call UpdateCtags()<cr>
+" tagbar
+nnoremap <F8> :TagbarToggle<cr>
+
+" buffer navigation
 nnoremap <Tab> :bnext<cr>
 nnoremap <S-Tab> :bprevious<cr>
 
 " YouCompleteMe
 let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 
+" color scheme selection
 "colorscheme seoul256
 "colorscheme grb256
 "colorscheme codeschool
@@ -132,9 +143,7 @@ let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 colorscheme xoria256
 
 " nerdtree
-nnoremap <silent> <leader>p :NERDTreeToggle<cr>
-
-" promptline configuration
+nnoremap <silent> <leader>p :NERDTreeTabsToggle<cr>
 
 " vim-airline configuration
 let g:airline_theme = 'kolor'
