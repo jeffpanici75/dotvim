@@ -37,6 +37,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdcommenter'
 Plugin 'elzr/vim-json'
 Plugin 'justinmk/vim-sneak'
 Plugin 'kien/ctrlp.vim'
@@ -47,6 +48,7 @@ Plugin 'tpope/vim-sleuth'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-scriptease'
 Plugin 'tpope/vim-sensible'
+Plugin 'tpope/vim-unimpaired'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'pangloss/vim-javascript'
 Plugin 'godlygeek/csapprox'
@@ -58,6 +60,7 @@ Plugin 'moll/vim-node'
 Plugin 'godlygeek/tabular'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'wincent/command-t'
+Plugin 'airblade/vim-gitgutter'
 
 call vundle#end()
 " 
@@ -70,8 +73,8 @@ set fillchars+=stl:\ ,stlnc:\
 set laststatus=2
 set guifont=Ubuntu\ Mono\ derivative\ Powerline:h18
 set ts=4 sts=4 sw=4 expandtab
-set lines=75
-set columns=90
+"set lines=75
+"set columns=90
 "set noantialias
 
 "set t_Co=256
@@ -131,10 +134,10 @@ colorscheme xoria256
 " nerdtree
 nnoremap <silent> <leader>p :NERDTreeToggle<cr>
 
-" powerline setup
-"source /Library/Python/2.7/site-packages/powerline/bindings/vim/plugin/powerline.vim
+" promptline configuration
 
 " vim-airline configuration
+let g:airline_theme = 'kolor'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
