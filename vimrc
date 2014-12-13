@@ -109,8 +109,8 @@ set number
 set ruler
 
 " ctrlp setup
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
+nnoremap <C-r> :CtrlPMRU<cr>
+set wildignore +=*/tmp/*,*.so,*.swp,*.zip,*.tar.gz
 
 " ctags
 set tags=./tags;~/Projects
