@@ -1,6 +1,6 @@
 let mapleader = ","
 
-function s:FindFile(file)
+function! s:FindFile(file)
     let curdir = getcwd()
     let found = curdir
     while !filereadable(a:file) && found != "/"
@@ -11,7 +11,7 @@ function s:FindFile(file)
     return found
 endfunction
 
-function UpdateCtags()
+function! UpdateCtags()
     let found = s:FindFile("tags")
     if !empty(found)
         execute "cd " . found
@@ -67,6 +67,9 @@ Plugin 'groenewege/vim-less'
 Plugin 'othree/html5.vim'
 Plugin 'mattn/webapi-vim'
 Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'krisajenkins/vim-postgresql-syntax'
+Plugin 'krisajenkins/vim-pipe'
+Plugin 'junegunn/vader.vim'
 
 call vundle#end()
 " 
@@ -100,6 +103,7 @@ set smartcase
 set nowrap
 set nocompatible
 set noequalalways
+set diffopt+=vertical
 
 " works in MacVim
 set clipboard=unnamed
@@ -162,3 +166,15 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
 autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
 autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
+
+" vim-pipe configuration
+"
+autocmd FileType sql :let b:vimpipe_command="psql jeff"
+autocmd FileType sql :let b:vimpipe_filetype="postgresql"
+
+" SQLComplete configuration
+let g:ftplugin_sql_omni_key = '<C-C>'
+
+" Vader configuration
+nnoremap <leader>1 :Vader<cr>
+nnoremap <leader>2 :Vader tests/*<cr>
