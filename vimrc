@@ -70,6 +70,9 @@ Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'krisajenkins/vim-postgresql-syntax'
 Plugin 'krisajenkins/vim-pipe'
 Plugin 'junegunn/vader.vim'
+Plugin 'vim-scripts/dbext.vim'
+Plugin 'ryanss/vim-hackernews'
+Plugin 'geekjuice/vim-mocha'
 
 call vundle#end()
 " 
