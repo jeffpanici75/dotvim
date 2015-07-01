@@ -75,6 +75,7 @@ Plugin 'ryanss/vim-hackernews'
 Plugin 'geekjuice/vim-mocha'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'othree/yajs.vim'
+Plugin 'mustache/vim-mustache-handlebars'
 
 call vundle#end()
 " 
@@ -152,7 +153,7 @@ let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 colorscheme xoria256
 
 " nerdtree
-nnoremap <silent> <leader>p :NERDTreeTabsToggle<cr>
+nnoremap <silent> <leader>p :NERDTreeMirrorToggle<cr>
 
 " vim-airline configuration
 let g:airline_theme = 'kolor'
@@ -183,3 +184,8 @@ let g:ftplugin_sql_omni_key = '<C-C>'
 " Vader configuration
 nnoremap <leader>1 :Vader<cr>
 nnoremap <leader>2 :Vader tests/*<cr>
+
+" vim-mocha configuration
+let g:mocha_js_command = "enew | silent r ! mocha --require es6_mocha.js --no-colors {spec}"
+
+map <Leader><Leader>m :call RunCurrentSpecFile()<CR>
