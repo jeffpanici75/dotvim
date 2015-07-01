@@ -73,6 +73,8 @@ Plugin 'junegunn/vader.vim'
 Plugin 'vim-scripts/dbext.vim'
 Plugin 'ryanss/vim-hackernews'
 Plugin 'geekjuice/vim-mocha'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'othree/yajs.vim'
 
 call vundle#end()
 " 
