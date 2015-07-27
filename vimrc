@@ -55,7 +55,6 @@ Plugin 'godlygeek/csapprox'
 Plugin 'bling/vim-airline'
 Plugin 'edkolev/promptline.vim'
 Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-session'
 Plugin 'moll/vim-node'
 Plugin 'godlygeek/tabular'
 Plugin 'maksimr/vim-jsbeautify'
@@ -74,6 +73,9 @@ Plugin 'vim-scripts/dbext.vim'
 Plugin 'ryanss/vim-hackernews'
 Plugin 'geekjuice/vim-mocha'
 Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'vim-scripts/taglist.vim'
+Plugin 'dkprice/vim-easygrep'
+Plugin 'qpkorr/vim-bufkill'
 
 call vundle#end()
 " 
@@ -187,3 +189,13 @@ nnoremap <leader>2 :Vader tests/*<cr>
 let g:mocha_js_command = "enew | silent r ! mocha --require es6_mocha.js --no-colors {spec}"
 
 map <Leader><Leader>m :call RunCurrentSpecFile()<CR>
+
+" grep fun
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  let g:ctrlp_use_caching = 0
+endif
+
