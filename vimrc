@@ -35,7 +35,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'Shougo/neocomplete.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'elzr/vim-json'
@@ -142,9 +142,6 @@ nnoremap <F8> :TagbarToggle<cr>
 nnoremap <Tab> :bnext<cr>
 nnoremap <S-Tab> :bprevious<cr>
 
-" YouCompleteMe
-let g:ycm_path_to_python_interpreter = '/usr/bin/python'
-
 " color scheme selection
 "colorscheme seoul256
 "colorscheme grb256
@@ -201,3 +198,8 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 endif
 
+" gitgutter
+let g:gitgutter_max_signs = 100000
+
+" neocomplete
+let g:neocomplete#enable_at_startup = 1
