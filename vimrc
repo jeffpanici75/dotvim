@@ -37,7 +37,6 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/nerdcommenter'
 Plugin 'elzr/vim-json'
 Plugin 'justinmk/vim-sneak'
 Plugin 'kien/ctrlp.vim'
@@ -49,8 +48,8 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-scriptease'
 Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-unimpaired'
-Plugin 'digitaltoad/vim-jade'
-Plugin 'pangloss/vim-javascript'
+Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-commentary'
 Plugin 'godlygeek/csapprox'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -58,27 +57,20 @@ Plugin 'edkolev/promptline.vim'
 Plugin 'xolox/vim-misc'
 Plugin 'moll/vim-node'
 Plugin 'godlygeek/tabular'
-Plugin 'maksimr/vim-jsbeautify'
-Plugin 'wincent/command-t'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'marijnh/tern_for_vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'groenewege/vim-less'
 Plugin 'othree/html5.vim'
 Plugin 'mattn/webapi-vim'
 Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'krisajenkins/vim-postgresql-syntax'
 Plugin 'krisajenkins/vim-pipe'
 Plugin 'junegunn/vader.vim'
-Plugin 'vim-scripts/dbext.vim'
-Plugin 'ryanss/vim-hackernews'
-Plugin 'geekjuice/vim-mocha'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'othree/yajs.vim'
-Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'vim-scripts/taglist.vim'
 Plugin 'dkprice/vim-easygrep'
 Plugin 'qpkorr/vim-bufkill'
+Plugin 'kburdett/vim-nuuid'
+Plugin 'thaerkh/vim-workspace'
+Plugin 'benmills/vimux'
 
 call vundle#end()
 " 
@@ -95,9 +87,8 @@ set ts=4 sts=4 sw=4 expandtab
 "set columns=90
 "set noantialias
 
-"set t_Co=256
-"set term=xterm-256color
-
+set t_Co=256
+set term=xterm-256color
 
 let g:CSApprox_attr_map = { 'bold' : 'bold', 'italic' : '', 'sp' : '' }
 
@@ -114,8 +105,33 @@ set nocompatible
 set noequalalways
 set diffopt+=vertical
 
-" works in MacVim
+" clang_complete
+let g:clang_library_path='/usr/lib/x86_64-linux-gnu/libclang-3.8.so.1'
+
+" basic clipboard configuration
 set clipboard=unnamed
+vnoremap <C-c> "+y
+
+" uuid
+fu! GenerateUUID()
+
+python << EOF
+import uuid
+import vim
+
+# output a uuid to the vim variable for insertion below
+vim.command("let generatedUUID = \"%s\"" % str(uuid.uuid4()))
+
+EOF
+
+" insert the python generated uuid into the current cursor's position
+:execute "normal i" . generatedUUID . "\n"
+
+endfunction
+
+"initialize the generateUUID function here and map it to a local
+"command
+noremap <Leader>r :call GenerateUUID()<CR>
 
 " workaround for copy paste in regular vim
 nmap <F2> :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
