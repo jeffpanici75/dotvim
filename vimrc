@@ -1,5 +1,15 @@
 let mapleader = ","
 
+function! GenerateUUID()
+python << EOF
+  import uuid
+  import vim
+
+  # output a uuid to the vim variable for insertion below
+  vim.command("let generatedUUID = \"%s\"" % str(uuid.uuid4()))
+EOF
+endfunction
+
 function! s:FindFile(file)
     let curdir = getcwd()
     let found = curdir
@@ -29,66 +39,77 @@ function! CopyMatches(reg)
 endfunction
 command! -register CopyMatches call CopyMatches(<q-reg>)
 
-" Vundle configuration
-set rtp+=~/.vim/bundle/Vundle.vim
+call plug#begin('~/.vim/plugged')
 
-call vundle#begin()
+Plug 'Shougo/neocomplete.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'elzr/vim-json'
+Plug 'justinmk/vim-sneak'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'majutsushi/tagbar'
+Plug 'plasticboy/vim-markdown'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-scriptease'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-commentary'
+Plug 'godlygeek/csapprox'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'edkolev/promptline.vim'
+Plug 'xolox/vim-misc'
+Plug 'moll/vim-node'
+Plug 'godlygeek/tabular'
+Plug 'airblade/vim-gitgutter'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'groenewege/vim-less'
+Plug 'othree/html5.vim'
+Plug 'mattn/webapi-vim'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'krisajenkins/vim-pipe'
+Plug 'junegunn/vader.vim'
+Plug 'vim-scripts/taglist.vim'
+Plug 'dkprice/vim-easygrep'
+Plug 'qpkorr/vim-bufkill'
+Plug 'kburdett/vim-nuuid'
+Plug 'thaerkh/vim-workspace'
+Plug 'benmills/vimux'
+Plug 'ARM9/arm-syntax-vim'
 
-Plugin 'gmarik/Vundle.vim'
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'elzr/vim-json'
-Plugin 'justinmk/vim-sneak'
-Plugin 'kien/ctrlp.vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-sleuth'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-scriptease'
-Plugin 'tpope/vim-sensible'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-commentary'
-Plugin 'godlygeek/csapprox'
-Plugin 'bling/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'edkolev/promptline.vim'
-Plugin 'xolox/vim-misc'
-Plugin 'moll/vim-node'
-Plugin 'godlygeek/tabular'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'groenewege/vim-less'
-Plugin 'othree/html5.vim'
-Plugin 'mattn/webapi-vim'
-Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'krisajenkins/vim-pipe'
-Plugin 'junegunn/vader.vim'
-Plugin 'vim-scripts/taglist.vim'
-Plugin 'dkprice/vim-easygrep'
-Plugin 'qpkorr/vim-bufkill'
-Plugin 'kburdett/vim-nuuid'
-Plugin 'thaerkh/vim-workspace'
-Plugin 'benmills/vimux'
+call plug#end()
 
-call vundle#end()
-" 
 "
-
-execute pathogen#infect()
-
+" common vim settings
+"
 set encoding=utf-8
 set fillchars+=stl:\ ,stlnc:\
 set laststatus=2
 set guifont=Ubuntu\ Mono\ derivative\ Powerline:h18
 set ts=4 sts=4 sw=4 expandtab
+set ignorecase
+set smartcase
+set nowrap
+set nocompatible
+set noequalalways
+set diffopt+=vertical
 "set lines=75
 "set columns=90
 "set noantialias
 
 set t_Co=256
-set term=xterm-256color
+set term=screen-256color
+"set term=xterm-256color
+"color scheme selection
+"colorscheme seoul256
+"colorscheme grb256
+"colorscheme codeschool
+"let g:solarized_termcolors=256
+"colorscheme solarized
+"colorscheme sorcerer
+colorscheme xoria256
 
 let g:CSApprox_attr_map = { 'bold' : 'bold', 'italic' : '', 'sp' : '' }
 
@@ -98,13 +119,6 @@ if has("autocmd")
 	filetype plugin indent on
 endif
 
-set ignorecase
-set smartcase
-set nowrap
-set nocompatible
-set noequalalways
-set diffopt+=vertical
-
 " clang_complete
 let g:clang_library_path='/usr/lib/x86_64-linux-gnu/libclang-3.8.so.1'
 
@@ -112,24 +126,7 @@ let g:clang_library_path='/usr/lib/x86_64-linux-gnu/libclang-3.8.so.1'
 set clipboard=unnamed
 vnoremap <C-c> "+y
 
-" uuid
-fu! GenerateUUID()
-
-python << EOF
-import uuid
-import vim
-
-# output a uuid to the vim variable for insertion below
-vim.command("let generatedUUID = \"%s\"" % str(uuid.uuid4()))
-
-EOF
-
-" insert the python generated uuid into the current cursor's position
-:execute "normal i" . generatedUUID . "\n"
-
-endfunction
-
-"initialize the generateUUID function here and map it to a local
+"initialize the GenerateUUID function here and map it to a local
 "command
 noremap <Leader>r :call GenerateUUID()<CR>
 
@@ -158,15 +155,6 @@ nnoremap <F8> :TagbarToggle<cr>
 " buffer navigation
 nnoremap <Tab> :bnext<cr>
 nnoremap <S-Tab> :bprevious<cr>
-
-" color scheme selection
-"colorscheme seoul256
-"colorscheme grb256
-"colorscheme codeschool
-"let g:solarized_termcolors=256
-"colorscheme solarized
-"colorscheme sorcerer
-colorscheme xoria256
 
 " nerdtree
 nnoremap <silent> <leader>p :NERDTreeMirrorToggle<cr>
@@ -220,3 +208,6 @@ let g:gitgutter_max_signs = 100000
 
 " neocomplete
 let g:neocomplete#enable_at_startup = 1
+
+" arm assembly syntax setup
+au BufNewFile,BufRead *.s,*.S set filetype=arm " arm = armv6/7
