@@ -39,13 +39,34 @@ function! CopyMatches(reg)
 endfunction
 command! -register CopyMatches call CopyMatches(<q-reg>)
 
+function! MakeToSplit()
+  silent! execute "botright vs new | 0read ! make"
+  silent! execute "wincmd l<CR>"
+  setlocal buftype=nofile bufhidden=delete nomodifiable nobuflisted noswapfile nowrap number
+endfunction
+
+function! UseSpaces()
+  set tabstop=4
+  set shiftwidth=4
+  set expandtab
+  set softtabstop=0
+  set autoindent
+  set smarttab
+endfunction
+
 call plug#begin('~/.vim/plugged')
 
+Plug 'yssl/QFEnter'
+Plug 'mhinz/vim-grepper'
+Plug 'junegunn/gv.vim'
 Plug 'Shougo/neocomplete.vim'
 Plug 'scrooloose/nerdtree'
+Plug 'xuyuanp/nerdtree-git-plugin'
 Plug 'elzr/vim-json'
 Plug 'justinmk/vim-sneak'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'jasoncodes/ctrlp-modified.vim'
+Plug 'lucidstack/ctrlp-tmux.vim'
 Plug 'majutsushi/tagbar'
 Plug 'plasticboy/vim-markdown'
 Plug 'tpope/vim-fugitive'
@@ -77,7 +98,6 @@ Plug 'qpkorr/vim-bufkill'
 Plug 'kburdett/vim-nuuid'
 Plug 'thaerkh/vim-workspace'
 Plug 'benmills/vimux'
-Plug 'ARM9/arm-syntax-vim'
 
 call plug#end()
 
@@ -88,13 +108,13 @@ set encoding=utf-8
 set fillchars+=stl:\ ,stlnc:\
 set laststatus=2
 set guifont=Ubuntu\ Mono\ derivative\ Powerline:h18
-set ts=4 sts=4 sw=4 expandtab
 set ignorecase
 set smartcase
 set nowrap
 set nocompatible
 set noequalalways
 set diffopt+=vertical
+
 "set lines=75
 "set columns=90
 "set noantialias
@@ -144,6 +164,7 @@ set ruler
 nnoremap <C-r> :CtrlPMRU<cr>
 nnoremap <leader>. :CtrlPTag<cr>
 set wildignore +=*/tmp/*,*.so,*.swp,*.zip,*.tar.gz
+let g:ctrlp_extensions = ['tmux']
 
 " ctags
 set tags=./tags;~/Projects
@@ -185,10 +206,6 @@ autocmd FileType sql :let b:vimpipe_filetype="postgresql"
 " SQLComplete configuration
 let g:ftplugin_sql_omni_key = '<C-C>'
 
-" Vader configuration
-nnoremap <leader>1 :Vader<cr>
-nnoremap <leader>2 :Vader tests/*<cr>
-
 " vim-mocha configuration
 let g:mocha_js_command = "enew | silent r ! mocha --require es6_mocha.js --no-colors {spec}"
 
@@ -210,4 +227,10 @@ let g:gitgutter_max_signs = 100000
 let g:neocomplete#enable_at_startup = 1
 
 " arm assembly syntax setup
-au BufNewFile,BufRead *.s,*.S set filetype=arm " arm = armv6/7
+"au! BufNewFile,BufRead *.s,*.S set filetype=arm
+
+" make setup
+nnoremap <silent> <C-a> :call MakeToSplit()<CR>
+
+" file type configuration
+autocmd FileType asm :call UseSpaces()
