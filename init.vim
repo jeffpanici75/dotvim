@@ -56,6 +56,9 @@ Plug 'edkolev/promptline.vim'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-easytags'
+
 call plug#end()
 
 "
@@ -83,6 +86,10 @@ set ignorecase
 set diffopt+=filler,vertical
 set breakindent
 set t_Co=256
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
 
 colorscheme xoria256
 
@@ -117,25 +124,11 @@ call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', [''])
 call denite#custom#var('grep', 'separator', ['--'])
 call denite#custom#var('grep', 'final_opts', [])
-call denite#custom#map(
-	\ 'insert',
-	\ '<C-w>c',
-	\ '<denite:quit>',
-	\'noremap')
-call denite#custom#map(
-	\ 'insert',
-	\ '<Esc>',
-	\ '<denite:enter_mode:normal>',
-	\'noremap')
+
 call denite#custom#map(
 	\ 'normal',
 	\ '<Esc>',
 	\ '<denite:leave_mode>',
-	\'noremap')
-call denite#custom#map(
-	\ 'insert',
-	\ '<C-v>',
-	\ '<denite:do_action:vsplit>',
 	\'noremap')
 call denite#custom#map(
 	\ 'normal',
@@ -147,31 +140,66 @@ call denite#custom#map(
 	\ 'dw',
 	\ '<denite:delete_word_after_caret>',
 	\'noremap')
+
 call denite#custom#map(
-	\ 'normal',
+	\ 'insert',
+	\ '<C-w>c',
+	\ '<denite:quit>',
+	\'noremap')
+call denite#custom#map(
+	\ 'insert',
+	\ '<Esc>',
+	\ '<denite:enter_mode:normal>',
+	\'noremap')
+call denite#custom#map(
+	\ 'insert',
+	\ '<C-v>',
+	\ '<denite:do_action:vsplit>',
+	\'noremap')
+call denite#custom#map(
+	\ 'insert',
+	\ '<Tab>',
+	\ '<denite:jump_to_next_source>',
+	\'noremap')
+call denite#custom#map(
+	\ 'insert',
+	\ '<S-Tab>',
+	\ '<denite:jump_to_previous_source>',
+	\'noremap')
+call denite#custom#map(
+	\ 'insert',
 	\ '<Up>',
 	\ '<denite:move_to_previous_line>',
 	\'noremap')
 call denite#custom#map(
-	\ 'normal',
+	\ 'insert',
 	\ '<Down>',
 	\ '<denite:move_to_next_line>',
 	\'noremap')
 call denite#custom#map(
-	\ 'normal',
+	\ 'insert',
 	\ '<PageUp>',
 	\ '<denite:scroll_page_backwards>',
 	\'noremap')
 call denite#custom#map(
-	\ 'normal',
+	\ 'insert',
 	\ '<PageDown>',
 	\ '<denite:scroll_page_forwards>',
 	\'noremap')
 
-nnoremap <C-0> :DeniteProjectDir -buffer-name=git file/rec file_mru buffer<CR>
-nnoremap <C-p> :DeniteProjectDir -buffer-name=files file_rec/git file_mru buffer<CR>
+nnoremap <C-p> :DeniteProjectDir -buffer-name=files file/rec file_mru tag buffer<CR>
+nnoremap <C-n> :DeniteProjectDir -buffer-name=tags tag<CR>
 
 hi link deniteMatchedChar Special
+
+" better-whitespace
+map ,W :ToggleWhitespace<CR>
+let g:better_whitespace_enabled = 0
+
+" lengthmatters
+map ,L :LengthmattersToggle<CR>
+let g:lengthmatters_on_by_default = 0
+let g:lengthmatters_start_at_column = 130
 
 " buffers
 nnoremap <Tab> :bnext<cr>
@@ -194,3 +222,18 @@ let g:LanguageClient_serverCommands = {
 	\ }
 let g:LanguageClient_autoStart = 1
 
+" autotag
+let g:autotagTagsFile=".tags"
+
+" cscope
+if has("cscope")
+    set csprg=/usr/local/bin/cscope
+    set csto=0
+    set cst
+    set nocsverb
+    if filereadable("cscope.out")
+        cs add cscope.out
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+endif
