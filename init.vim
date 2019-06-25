@@ -7,14 +7,9 @@ Plug 'autozimu/LanguageClient-neovim', {
   \ 'do': 'bash install.sh',
   \ }
 
-Plug 'Shougo/denite.nvim'
+Plug 'ctrlpvim/ctrlp.vim'
 
-Plug 'chemzqm/denite-extra'
-Plug 'chemzqm/denite-git'
-
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/neomru.vim'
-Plug 'Shougo/defx.nvim'
+Plug 'scrooloose/nerdtree'
 
 Plug 'airblade/vim-gitgutter'
 
@@ -99,99 +94,6 @@ filetype plugin indent on
 " deoplete
 let g:deoplete#enable_at_startup = 1
 
-" denite
-augroup deniteresize
-  autocmd!
-  autocmd VimResized,VimEnter * call denite#custom#option('default',
-        \'winheight', winheight(0) / 2)
-augroup end
-
-call denite#custom#option('default', {
-      \ 'prompt': '❯'
-      \ })
-
-call denite#custom#var('file_rec', 'command',
-      \ ['ag', '--follow', '--nocolor', '--nogroup', '-u', '-g', ''])
-
-call denite#custom#alias('source', 'file_rec/git', 'file_rec')
-call denite#custom#var('file_rec/git', 'command',
-      \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
-
-call denite#custom#var('grep', 'command', ['ag'])
-call denite#custom#var('grep', 'default_opts',
-      \ ['-i', '--vimgrep',])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', [''])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
-
-call denite#custom#map(
-	\ 'normal',
-	\ '<Esc>',
-	\ '<denite:leave_mode>',
-	\'noremap')
-call denite#custom#map(
-	\ 'normal',
-	\ '<C-v>',
-	\ '<denite:do_action:vsplit>',
-	\'noremap')
-call denite#custom#map(
-	\ 'normal',
-	\ 'dw',
-	\ '<denite:delete_word_after_caret>',
-	\'noremap')
-
-call denite#custom#map(
-	\ 'insert',
-	\ '<C-w>c',
-	\ '<denite:quit>',
-	\'noremap')
-call denite#custom#map(
-	\ 'insert',
-	\ '<Esc>',
-	\ '<denite:enter_mode:normal>',
-	\'noremap')
-call denite#custom#map(
-	\ 'insert',
-	\ '<C-v>',
-	\ '<denite:do_action:vsplit>',
-	\'noremap')
-call denite#custom#map(
-	\ 'insert',
-	\ '<Tab>',
-	\ '<denite:jump_to_next_source>',
-	\'noremap')
-call denite#custom#map(
-	\ 'insert',
-	\ '<S-Tab>',
-	\ '<denite:jump_to_previous_source>',
-	\'noremap')
-call denite#custom#map(
-	\ 'insert',
-	\ '<Up>',
-	\ '<denite:move_to_previous_line>',
-	\'noremap')
-call denite#custom#map(
-	\ 'insert',
-	\ '<Down>',
-	\ '<denite:move_to_next_line>',
-	\'noremap')
-call denite#custom#map(
-	\ 'insert',
-	\ '<PageUp>',
-	\ '<denite:scroll_page_backwards>',
-	\'noremap')
-call denite#custom#map(
-	\ 'insert',
-	\ '<PageDown>',
-	\ '<denite:scroll_page_forwards>',
-	\'noremap')
-
-nnoremap <C-p> :DeniteProjectDir -buffer-name=files file/rec file_mru tag buffer<CR>
-nnoremap <C-n> :DeniteProjectDir -buffer-name=tags tag<CR>
-
-hi link deniteMatchedChar Special
-
 " better-whitespace
 map ,W :ToggleWhitespace<CR>
 let g:better_whitespace_enabled = 0
@@ -204,6 +106,10 @@ let g:lengthmatters_start_at_column = 130
 " buffers
 nnoremap <Tab> :bnext<cr>
 nnoremap <S-Tab> :bprevious<cr>
+
+" NERDTree
+nnoremap <C-[> :NERDTreeToggle<cr>
+nnoremap <C-]> :NERDTreeVCS<cr>
 
 " vim-airline
 let g:airline_theme = 'kolor'
