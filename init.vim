@@ -1,10 +1,9 @@
 let mapleader = ","
+let maplocalleader = ","
 
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'ctrlpvim/ctrlp.vim'
-
-Plug 'scrooloose/nerdtree'
 
 Plug 'airblade/vim-gitgutter'
 
@@ -36,13 +35,16 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-obsession'
 
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+
 Plug 'trevordmiller/nova-vim'
 
 Plug 'whatyouhide/vim-lengthmatters'
 
 Plug 'edkolev/promptline.vim'
 
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 Plug 'xolox/vim-misc'
@@ -56,7 +58,16 @@ Plug 'derekwyatt/vim-fswitch'
 
 Plug 'ludovicchabant/vim-gutentags'
 
+Plug 'mg979/vim-visual-multi'
+
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'jpalardy/vim-slime'
+Plug 'wlangstroth/vim-racket'
+
+Plug 'christoomey/vim-tmux-navigator'
+" Plug 'vim-scripts/paredit.vim'
 
 call plug#end()
 
@@ -101,9 +112,9 @@ set hidden
 nnoremap <Tab> :tabnext<cr>
 nnoremap <S-Tab> :tabprev<cr>
 
-set switchbuf=usetab
-nnoremap <C-Right> :sbnext<cr>
-nnoremap <C-Left> :sbprevious<cr>
+"set switchbuf=usetab
+nnoremap <C-Right> :bnext<cr>
+nnoremap <C-Left> :bprevious<cr>
 
 nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<cr>
 nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<cr>
@@ -124,20 +135,17 @@ if executable('ag')
     let g:ctrlp_user_command = 'ag %s -l --nocolor --path-to-ignore ~/.ignore -g ""'
 endif
 
-nmap <C-N> :CtrlPTag<cr>
-nmap <C-K> :CtrlPBuffer<cr>
+nmap <F10> :CtrlPTag<cr>
+nmap <F9>  :CtrlPBuffer<cr>
 
 " better-whitespace
-map <leader>W :ToggleWhitespace<CR>
-let g:better_whitespace_enabled = 0
+"map <leader>W :ToggleWhitespace<CR>
+let g:better_whitespace_enabled = 1
 
 " lengthmatters
-map <leader>L :LengthmattersToggle<CR>
+" map <leader>L :LengthmattersToggle<CR>
 let g:lengthmatters_on_by_default = 0
 let g:lengthmatters_start_at_column = 130
-
-" NERDTree
-nnoremap <F11> :NERDTreeToggle<cr>
 
 " tagbar
 let g:tagbar_autoclose = 1
@@ -185,3 +193,59 @@ if !empty(glob(expand(g:project_file_name)))
     exec 'source' fnameescape(g:project_file_name)
 endif
 
+" terminal settings
+nnoremap <F11> :edit term://bash<cr>
+tnoremap <Esc> <C-\><C-n>
+tnoremap <A-h> <C-\><C-N><C-w>h
+tnoremap <A-j> <C-\><C-N><C-w>j
+tnoremap <A-k> <C-\><C-N><C-w>k
+tnoremap <A-l> <C-\><C-N><C-w>l
+inoremap <A-h> <C-\><C-N><C-w>h
+inoremap <A-j> <C-\><C-N><C-w>j
+inoremap <A-k> <C-\><C-N><C-w>k
+inoremap <A-l> <C-\><C-N><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
+
+" vim-slime
+let g:slime_target = "tmux"
+let g:slime_dont_ask_default = 1
+let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+
+" rainbow_parentheses
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['green',       'RoyalBlue3'],
+    \ ['cyan',        'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+" moving lines
+nnoremap <A-Down> :m .+1<CR>==
+nnoremap <A-Up> :m .-2<CR>==
+inoremap <A-Down> <Esc>:m .+1<CR>==gi
+inoremap <A-Up> <Esc>:m .-2<CR>==gi
+vnoremap <A-Down> :m '>+1<CR>gv=gv
+vnoremap <A-Up> :m '<-2<CR>gv=gv
+
+" paredit
+" let g:paredit_smartjump = 1
+" let g:paredit_matchlines = 200
