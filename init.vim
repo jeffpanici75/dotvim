@@ -4,6 +4,7 @@ let maplocalleader = ","
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'FelikZ/ctrlp-py-matcher'
 
 Plug 'airblade/vim-gitgutter'
 
@@ -123,20 +124,32 @@ nmap <leader>bn :enew<cr>
 nmap <leader>bq :bp <bar> bd #<cr>
 nmap <leader>bl :ls<cr>
 
+" editing
+nnoremap <silent> oo :<C-u>call append(line("."),   repeat([""], v:count1))<cr>
+nnoremap <silent> OO :<C-u>call append(line(".")-1, repeat([""], v:count1))<cr>
+nnoremap <silent> k i<cr><esc>
+
 " deoplete
 let g:deoplete#enable_at_startup = 1
 
 " gutentags
+" ctags --language-force=scheme *.rkt
 let g:gutentags_cache_dir = $HOME . '/.cache/ctags'
+"let g:gutentags_ctags_extra_args = ['--language-force=scheme', '*.rkt']
 
 " ctrlp
 let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+let g:trlp_match_func = { 'match': 'pymatcher#PyMatch' }
+let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir',
+                          \ 'undo', 'line', 'changes', 'bookmarkdir']
+let g:ctrlp_buftag_types = {
+\ 'racket'     : '--language-force=scheme --kinds-scheme=fs',
+\ }
 if executable('ag')
     let g:ctrlp_user_command = 'ag %s -l --nocolor --path-to-ignore ~/.ignore -g ""'
 endif
 
-nmap <F10> :CtrlPTag<cr>
-nmap <F9>  :CtrlPBuffer<cr>
+nmap <F12> :CtrlPBufTag<cr>
 
 " better-whitespace
 "map <leader>W :ToggleWhitespace<CR>
@@ -149,7 +162,7 @@ let g:lengthmatters_start_at_column = 130
 
 " tagbar
 let g:tagbar_autoclose = 1
-nnoremap <F12> :TagbarToggle<cr>
+"nnoremap <F12> :TagbarToggle<cr>
 
 " vim-airline/buffers
 let g:airline_theme = 'kolor'
