@@ -1,7 +1,11 @@
 let mapleader = ","
 let maplocalleader = ","
 
-call plug#begin('~/.config/nvim/plugged')
+if has("win32")
+    call plug#begin('~/AppData/Local/nvim/plugged')
+else
+    call plug#begin('~/.config/nvim/plugged')
+endif
 
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
@@ -17,7 +21,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'haya14busa/incsearch-easymotion.vim'
 Plug 'haya14busa/incsearch.vim'
 
-Plug 'justinmk/vim-dirvish'
+"Plug 'justinmk/vim-dirvish'
 
 Plug 'matze/vim-move'
 
@@ -68,19 +72,26 @@ Plug 'jpalardy/vim-slime'
 Plug 'wlangstroth/vim-racket'
 
 Plug 'christoomey/vim-tmux-navigator'
-" Plug 'vim-scripts/paredit.vim'
+Plug 'vim-scripts/paredit.vim'
 
 call plug#end()
 
 "
 " common vim settings
 "
+if has("win32")
+    set backupdir=~/AppData/Local/.vim/backups
+    set directory=~/AppData/Local/.vim/swaps
+    set undodir=~/AppData/Local/.vim/undo
+else
+    set backupdir=~/.vim/backups
+    set directory=~/.vim/swaps
+    set undodir=~/.vim/undo
+endif
+
 set nocompatible
 set encoding=utf-8
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
 set undofile
-set undodir=~/.vim/undo
 set noerrorbells
 set splitbelow
 set splitright
@@ -130,10 +141,14 @@ nnoremap <silent> OO :<C-u>call append(line(".")-1, repeat([""], v:count1))<cr>
 nnoremap <silent> k i<cr><esc>
 
 " deoplete
+if has("win32")
+    let g:python3_host_prog = "C:\\Tools\\Python39\\python.exe"
+endif
 let g:deoplete#enable_at_startup = 1
 
 " gutentags
 " ctags --language-force=scheme *.rkt
+let g:gutentags_enabled = 1
 let g:gutentags_cache_dir = $HOME . '/.cache/ctags'
 "let g:gutentags_ctags_extra_args = ['--language-force=scheme', '*.rkt']
 
@@ -197,14 +212,29 @@ map <leader>gc :Gcommit<cr>
 map <leader>gl :Glog<cr>
 
 " config helpers
-command! InitEdit :e ~/.config/nvim/init.vim
-command! InitSource :source ~/.config/nvim/init.vim
+if has("win32")
+    command! InitEdit :e ~/AppData/Local/nvim/init.vim
+    command! InitSource :source ~/AppData/Local/nvim/init.vim
+else
+    command! InitEdit :e ~/.config/nvim/init.vim
+    command! InitSource :source ~/.config/nvim/init.vim
+endif
 
 " project level customization
-let g:project_file_name = 'project.vim'
-if !empty(glob(expand(g:project_file_name)))
-    exec 'source' fnameescape(g:project_file_name)
-endif
+let g:prj_file_name = 'project.vim'
+
+function! Project_Load(file_name)
+    let l:tmp = a:file_name
+    if empty(l:tmp)
+        let l:tmp = g:prj_file_name
+    endif
+    let l:tmp = fnameescape(glob(expand(l:tmp)))
+    if exists(l:tmp)
+        exec 'source' l:tmp
+    endif
+endfunction
+
+command! PrjLoad :call Project_Load(g:prj_file_name)
 
 " terminal settings
 nnoremap <F11> :edit term://bash<cr>
@@ -260,5 +290,7 @@ vnoremap <A-Down> :m '>+1<CR>gv=gv
 vnoremap <A-Up> :m '<-2<CR>gv=gv
 
 " paredit
-" let g:paredit_smartjump = 1
+let g:paredit_smartjump = 1
 " let g:paredit_matchlines = 200
+
+" netrw
